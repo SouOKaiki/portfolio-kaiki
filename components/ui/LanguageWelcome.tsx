@@ -1,19 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/lib/i18n/LanguageProvider";
 import type { Lang } from "@/lib/i18n/dict";
 
-// Aparece só quando não há cookie de idioma (primeira visita).
-// O `show` é decidido no servidor e passado como prop.
+// Pop-up de boas-vindas para escolher idioma na primeira visita.
+// `show` (vindo do servidor, via cookie) só DEFINE se o modal aparece no
+// primeiro render. A partir daí, o estado de aberto/fechado é LOCAL — assim
+// a animação de saída roda na hora em que o usuário clica, sem depender do
+// router.refresh() que demora um pouquinho.
 export function LanguageWelcome({ show }: { show: boolean }) {
   const { setLang } = useLang();
-  // estado local para esconder com animação após escolher
-  const choose = (l: Lang) => setLang(l);
+  const [open, setOpen] = useState(show);
+
+  function choose(l: Lang) {
+    setOpen(false); // fecha imediatamente (com animação)
+    setLang(l); // persiste o cookie e dispara o refresh dos dados
+  }
 
   return (
     <AnimatePresence>
-      {show && <Modal onChoose={choose} />}
+      {open && <Modal onChoose={choose} />}
     </AnimatePresence>
   );
 }
@@ -24,12 +32,13 @@ function Modal({ onChoose }: { onChoose: (l: Lang) => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
       className="fixed inset-0 z-[300] flex items-center justify-center bg-black/70 p-6 backdrop-blur-md"
     >
       <motion.div
         initial={{ scale: 0.94, y: 12 }}
         animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.94, y: 12, opacity: 0 }}
+        exit={{ scale: 0.94, y: 8, opacity: 0 }}
         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         className="glass-card relative w-full max-w-[400px] overflow-hidden p-8 text-center"
       >

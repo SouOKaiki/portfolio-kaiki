@@ -1,6 +1,5 @@
 import { Lock } from "lucide-react";
 import { login } from "@/app/admin/auth-actions";
-import { Background } from "@/components/ui/Background";
 
 export default async function LoginPage({
   searchParams,
@@ -11,7 +10,7 @@ export default async function LoginPage({
 
   return (
     <>
-      <Background />
+      
       <main className="relative mx-auto flex min-h-screen max-w-[420px] flex-col justify-center px-7">
         <div className="glass-card p-8">
           <div className="mb-6 grid h-12 w-12 place-items-center rounded-xl border border-line-strong bg-gradient-to-br from-pink/15 to-purple/15 text-pink">

@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { Background } from "@/components/ui/Background";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
@@ -37,7 +36,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Background />
       <Header />
       <main>
         <Hero content={content} />

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { LogOut, ExternalLink, Lock } from "lucide-react";
-import { Background } from "@/components/ui/Background";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 import { logout } from "@/app/admin/auth-actions";
 import {
@@ -23,7 +22,7 @@ export default async function AdminPage() {
   if (!SUPABASE_READY) {
     return (
       <>
-        <Background />
+        
         <main className="relative mx-auto flex min-h-screen max-w-[640px] flex-col justify-center px-7">
           <div className="glass-card p-8">
             <div className="mb-5 grid h-12 w-12 place-items-center rounded-xl border border-line-strong bg-gradient-to-br from-pink/15 to-purple/15 text-pink">
@@ -62,7 +61,7 @@ export default async function AdminPage() {
 
   return (
     <>
-      <Background />
+      
       <main className="relative mx-auto min-h-screen max-w-[920px] px-7 py-14">
         <header className="mb-10 flex flex-wrap items-center justify-between gap-4">
           <div>
