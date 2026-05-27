@@ -47,7 +47,7 @@ export function ColorBends({
   intensity = 1.5,
   bandWidth = 3.5,
   background = "#050507",
-  opacity = 0.55,
+  opacity = 0.15,
 }: ColorBendsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
