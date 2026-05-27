@@ -44,10 +44,10 @@ export function ColorBends({
   mouseInfluence = 1,
   noise = 0.23,
   parallax = 0.1,
-  intensity = 0.5,
+  intensity = 0.1,
   bandWidth = 3.5,
   background = "#050507",
-  opacity = 0.15,
+  opacity = 0.05,
 }: ColorBendsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 

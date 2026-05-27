@@ -57,7 +57,7 @@ export const dict = {
     "footer.tagline":
       "Dublagem e voice acting para jogos, animações e animes. Cada história merece a voz certa.",
     "footer.contact": "Contato",
-    "footer.madeWith": "Feito com voz.",
+    "footer.madeWith": "Vamos dublar?",
 
     "lang.welcomeTitle": "Escolha seu idioma",
     "lang.welcomeText": "Choose your language",

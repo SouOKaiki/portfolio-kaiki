@@ -47,7 +47,7 @@ export function Footer({ content }: { content: SiteContent }) {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-7 text-[13.5px] text-faint">
-          <span>© {year} Tokaira. {t("footer.madeWith")}</span>
+          <span>© {year} Kaiki. {t("footer.madeWith")}</span>
           <div className="flex gap-3">
             {contact.socials.map((s) => {
               const Icon = SOCIAL_ICONS[s.platform];
