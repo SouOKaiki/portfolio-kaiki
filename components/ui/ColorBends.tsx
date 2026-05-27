@@ -162,15 +162,19 @@ export function ColorBends({
         float n = (hash(gl_FragCoord.xy + t) - 0.5) * u_noise;
         col += n;
 
-        // Vinheta sutil pras bordas escurecerem (combina com tema dark).
-        float vign = smoothstep(1.3, 0.2, length(uv));
+        // Vinheta INVERTIDA: escurece o CENTRO da tela (onde fica o conteúdo)
+        // e deixa o efeito viver discretamente nos cantos. Isso é o que torna
+        // o fundo "quase imperceptível" sem matar a vida nas bordas.
+        float d = length(uv);
+        float vign = smoothstep(0.0, 1.4, d); // 0 no centro, 1 longe
+        col *= vign;
         col = mix(u_bg, col, vign);
 
         // Mistura com a cor de fundo de acordo com a opacidade desejada.
         col = mix(u_bg, col, u_opacity);
 
         // Aplica suavização nas faixas (efeito ainda mais "bands").
-        col = mix(col, palette(colorT + 0.5), pow(1.0 - k, soft) * 0.25);
+        col = mix(col, palette(colorT + 0.5), pow(1.0 - k, soft) * 0.15);
 
         gl_FragColor = vec4(col, 1.0);
       }

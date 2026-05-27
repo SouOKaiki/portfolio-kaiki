@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Logo } from "@/components/ui/Logo";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { useT } from "@/lib/i18n/LanguageProvider";
 import { cn } from "@/lib/utils";
@@ -43,9 +42,10 @@ export function Header() {
           scrolled ? "py-3" : "py-5"
         )}
       >
-        <div className="justify-self-start">
-          <Logo />
-        </div>
+        {/* Espaço vazio à esquerda — mantém o grid balanceado para que
+            as abas continuem centralizadas. Para reativar a logo, troque por:
+            <div className="justify-self-start"><Logo /></div> */}
+        <div />
 
         {/* Links desktop — centralizados */}
         <div className="hidden items-center gap-1.5 justify-self-center md:flex">

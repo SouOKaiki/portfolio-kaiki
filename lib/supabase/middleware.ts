@@ -27,7 +27,7 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // IMPORTANTE: getUser() valida o token no servidor de auth. s
+  // IMPORTANTE: getUser() valida o token no servidor de auth. ss
   const {
     data: { user },
   } = await supabase.auth.getUser();

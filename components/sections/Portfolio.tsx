@@ -213,14 +213,17 @@ export function Portfolio({ items }: { items: PortfolioItem[] }) {
           onClick={() => scrollBy(-1)}
         />
 
-        {/* Trilho de pôsteres */}
+        {/* Trilho de pôsteres.
+            Os paddings verticais (py-10) + margens negativas (-my-10) criam
+            espaço para a sombra do hover e o -translate-y do card respirarem,
+            sem afetar o espaçamento vertical da seção. */}
         <motion.div
           ref={scroller}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-my-10 flex snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-visible scroll-smooth px-1 py-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {items.map((item) => (
             <PosterCard key={item.id} item={item} onOpen={setActive} />

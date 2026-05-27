@@ -52,17 +52,17 @@ export default async function RootLayout({
         <ColorBends
           colors={["#fd0757", "#8d50fe", "#ffde59"]}
           rotation={12}
-          speed={0.2}
+          speed={0.12}
           scale={1}
           frequency={0.9}
           warpStrength={0.95}
-          mouseInfluence={1}
-          noise={0.23}
-          parallax={0.1}
-          intensity={1.5}
+          mouseInfluence={0.3}
+          noise={0.18}
+          parallax={0.05}
+          intensity={0.6}
           bandWidth={3.5}
           background="#050507"
-          opacity={0.5}
+          opacity={0.12}
         />
         <CursorTrail />
         <LanguageProvider initialLang={initialLang}>

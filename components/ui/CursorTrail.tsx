@@ -24,7 +24,8 @@ export function CursorTrail() {
     let height = (canvas.height = window.innerHeight);
 
     // Cadeia de segmentos que perseguem o ponto anterior.
-    const COUNT = 18;
+    // Cauda curta e fina = motion blur sutil, não "cobra de luz".
+    const COUNT = 10;
     const points = Array.from({ length: COUNT }, () => ({
       x: width / 2,
       y: height / 2,
@@ -65,13 +66,13 @@ export function CursorTrail() {
 
       if (active) {
         // Desenha a trilha como uma linha suave com largura e opacidade
-        // decrescentes — a "cauda" some, criando o motion blur.
+        // decrescentes — fina, discreta, lembra motion blur, não chama atenção.
         for (let i = 0; i < points.length - 1; i++) {
           const a = points[i];
           const b = points[i + 1];
           const t = i / (points.length - 1); // 0 (cabeça) -> 1 (cauda)
-          const alpha = (1 - t) * 0.5;
-          const lineWidth = (1 - t) * 9 + 1;
+          const alpha = (1 - t) * 0.18; // opacidade muito mais baixa
+          const lineWidth = (1 - t) * 3 + 0.6; // bem mais fina
 
           // Cor interpolada rosa (#fd0757) -> roxo (#8d50fe)
           const r = Math.round(253 + (141 - 253) * t);
@@ -85,20 +86,12 @@ export function CursorTrail() {
           ctx.lineWidth = lineWidth;
           ctx.lineCap = "round";
           ctx.lineJoin = "round";
-          // brilho suave (glow)
+          // glow bem leve, só pra dar sensação de luz
           ctx.shadowColor = `rgba(${r},${g},${bl},${alpha})`;
-          ctx.shadowBlur = 12;
+          ctx.shadowBlur = 6;
           ctx.stroke();
         }
-
-        // Pontinho luminoso na ponta (a "cabeça" do cursor)
-        const head = points[0];
-        ctx.beginPath();
-        ctx.arc(head.x, head.y, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,222,89,0.9)"; // dourado da marca
-        ctx.shadowColor = "rgba(255,222,89,0.9)";
-        ctx.shadowBlur = 14;
-        ctx.fill();
+        // (cabeça dourada removida — destacava demais o cursor)
       }
 
       raf = requestAnimationFrame(render);

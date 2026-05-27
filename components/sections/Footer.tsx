@@ -1,7 +1,6 @@
 "use client";
 
 import { Instagram, Youtube, Linkedin, type LucideIcon } from "lucide-react";
-import { Logo } from "@/components/ui/Logo";
 import { useT } from "@/lib/i18n/LanguageProvider";
 import type { SiteContent } from "@/lib/types";
 
@@ -20,10 +19,9 @@ export function Footer({ content }: { content: SiteContent }) {
     <footer className="border-t border-line pb-10 pt-16">
       <div className="mx-auto max-w-[1200px] px-7">
         <div className="mb-12 flex flex-wrap items-start justify-between gap-10">
-          {/* Marca + descrição */}
+          {/* Descrição da marca (sem logo) */}
           <div className="max-w-[320px]">
-            <Logo showText />
-            <p className="mt-5 text-[14px] font-light text-dim">
+            <p className="text-[14px] font-light text-dim">
               {t("footer.tagline")}
             </p>
           </div>
