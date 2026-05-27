@@ -25,13 +25,13 @@ export function CursorTrail() {
 
     // Cadeia de segmentos que perseguem o ponto anterior.
     // Cauda curta e fina = motion blur sutil, não "cobra de luz".
-    const COUNT = 10;
+    const COUNT = 15;
     const points = Array.from({ length: COUNT }, () => ({
-      x: width / 2,
-      y: height / 2,
+      x: width / 1,
+      y: height / 3,
     }));
 
-    const mouse = { x: width / 2, y: height / 2 };
+    const mouse = { x: width / 1, y: height / 3 };
     let active = false;
     let raf = 0;
 

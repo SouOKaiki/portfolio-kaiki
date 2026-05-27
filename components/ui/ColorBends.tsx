@@ -39,7 +39,7 @@ export function ColorBends({
   rotation = 12,
   speed = 0.2,
   scale = 1,
-  frequency = 0.9,
+  frequency = 2.5,
   warpStrength = 0.95,
   mouseInfluence = 1,
   noise = 0.23,
