@@ -23,7 +23,7 @@ export function Marquee({ clients }: { clients: Client[] }) {
             {items.map((c, i) => (
               <span
                 key={`${c.id}-${i}`}
-                className="flex items-center gap-2.5 whitespace-nowrap font-display text-[1.35rem] font-semibold text-faint opacity-60 transition duration-300 hover:text-body hover:opacity-100"
+                className="flex items-center gap-2.5 whitespace-nowrap font-display text-[1.35rem] font-semibold text-faint opacity-90 transition duration-300 hover:text-body hover:opacity-100"
               >
                 <BadgeCheck size={22} className="opacity-70" />
                 {c.name}

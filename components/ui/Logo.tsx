@@ -24,9 +24,9 @@ export function Logo({ href = "#top", showText = false }: LogoProps) {
       </span>
       {showText && (
         <span className="font-display text-[19px] font-bold leading-none tracking-[0.5px]">
-          TOKAIRA
+          KAIKI
           <span className="mt-[-3px] block text-[11px] font-normal tracking-[3px] text-dim">
-            STUDIO
+            AUGUSTO
           </span>
         </span>
       )}

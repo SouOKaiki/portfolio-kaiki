@@ -23,11 +23,11 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Tokaira Studio — Dublagem & Voice Acting",
+  title: "Kaiki Augusto — Dublagem & Voice Acting",
   description:
     "Dublador e voice actor especializado em animação e games. Dou voz às suas histórias.",
   openGraph: {
-    title: "Tokaira Studio — Dublagem & Voice Acting",
+    title: "Kaiki Augusto — Dublagem & Voice Acting",
     description:
       "Dublador e voice actor especializado em animação e games.",
     type: "website",
