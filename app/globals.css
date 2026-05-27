@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pink: #fd0757;
+  --purple: #8d50fe;
+  --gold: #ffde59;
+  /* --font-display e --font-body são injetadas por next/font no layout.tsx. */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #050507;
+  color: #f5f4f7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--pink);
+  color: #fff;
+}
+
+/* Scrollbar discreta no tema dark */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@layer components {
+  /* Texto com gradiente da marca (estático) */
+  .text-brand-gradient {
+    @apply bg-brand-text bg-clip-text text-transparent;
+  }
+
+  /* Texto com gradiente animado (para a palavra de destaque do título) */
+  .text-brand-gradient-animated {
+    background: linear-gradient(
+      110deg,
+      #fd0757,
+      #8d50fe,
+      #ffde59,
+      #8d50fe,
+      #fd0757
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @apply animate-gradientShift;
+  }
+
+  /* Botão primário com glow */
+  .btn-glow {
+    @apply relative inline-flex items-center gap-3 rounded-full bg-brand-gradient
+           px-8 py-4 font-semibold text-white shadow-glow
+           transition-all duration-500 ease-smooth;
+  }
+  .btn-glow::after {
+    content: "";
+    @apply absolute inset-0 -z-10 rounded-full bg-brand-gradient opacity-60
+           blur-xl transition-all duration-500 ease-smooth;
+  }
+  .btn-glow:hover {
+    @apply -translate-y-[3px] shadow-glow-lg;
+  }
+  .btn-glow:hover::after {
+    @apply opacity-90;
+  }
+
+  /* Botão fantasma de vidro */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2.5 rounded-full border border-line-strong
+           bg-glass px-7 py-4 font-medium text-body backdrop-blur-md
+           transition-all duration-300 ease-smooth hover:-translate-y-0.5
+           hover:border-dim hover:bg-glass-strong;
+  }
+
+  /* Cartão de vidro */
+  .glass-card {
+    @apply rounded-xl2 border border-line bg-glass backdrop-blur-xl
+           transition-all duration-500 ease-smooth;
+  }
+}
+
+/* Fundo atmosférico (orbs desfocados) */
+.bg-orb {
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(110px);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Grid sutil que some no topo */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 70px 70px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 75% 55% at 50% 0%,
+    #000 5%,
+    transparent 65%
+  );
+  mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 5%, transparent 65%);
+}
