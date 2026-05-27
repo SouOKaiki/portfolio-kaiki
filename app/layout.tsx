@@ -51,18 +51,18 @@ export default async function RootLayout({
       <body className="font-body">
         <ColorBends
           colors={["#a31b4d", "#5a1aa3", "#ff2d6e"]}
-          rotation={68}
-          speed={0.08}
+          rotation={55}
+          speed={0.25}
           scale={1}
           frequency={0.9}
-          warpStrength={0.6}
-          mouseInfluence={0.2}
-          noise={0.04}
+          warpStrength={0.35}
+          mouseInfluence={0.15}
+          noise={0.03}
           parallax={0.04}
-          intensity={1.0}
+          intensity={0.45}
           bandWidth={3.5}
-          background="#0a0512"
-          opacity={0.85}
+          background="#080410"
+          opacity={0.6}
         />
         <CursorTrail />
         <LanguageProvider initialLang={initialLang}>

@@ -37,17 +37,17 @@ interface ColorBendsProps {
 export function ColorBends({
   colors = ["#fd0757", "#8d50fe", "#ffde59"],
   rotation = 12,
-  speed = 1.5,
+  speed = 0.2,
   scale = 1,
-  frequency = 2.5,
+  frequency = 0.9,
   warpStrength = 0.95,
   mouseInfluence = 1,
   noise = 0.23,
   parallax = 0.1,
-  intensity = 0.1,
+  intensity = 1.5,
   bandWidth = 3.5,
   background = "#050507",
-  opacity = 0.05,
+  opacity = 0.55,
 }: ColorBendsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -72,7 +72,7 @@ export function ColorBends({
     `;
 
     // O fragment shader desenha bandas senoidais com warp + ruído. Cada banda
-    // pega uma de 3 cores e mistura suavemente entre vizinhas.
+    // pega uma de 3 cores e mistura suavemente entre vizinhas. s
     const frag = `
       precision highp float;
       uniform vec2  u_res;
@@ -125,45 +125,70 @@ export function ColorBends({
         vec2 mouse = (u_mouse - 0.5);
         uv += mouse * u_parallax;
 
-        // Rotação da "lâmina" diagonal.
-        float a = radians(u_rotation);
-        float cs = cos(a), sn = sin(a);
-        vec2 ruv = mat2(cs, -sn, sn, cs) * uv;
-
         float t = u_time * u_speed;
 
-        // Warp lento, só pra lâmina "respirar" de forma orgânica (sem ondular muito).
-        float w = vnoise(ruv * 0.8 + vec2(t * 0.15, -t * 0.10)) - 0.5;
-        ruv.x += w * u_warp * 0.6;
+        // ===== Aurora: 3 feixes difusos em rotações diferentes =====
+        // Cada feixe é uma "lâmina" suave numa diagonal, mas:
+        //  - o ângulo OSCILA com o tempo (não fica parado),
+        //  - a posição DESLIZA pra frente e pra trás,
+        //  - a largura PULSA lentamente,
+        //  - o warp do ruído deforma a borda da lâmina.
+        // O resultado é uma luz que muda de forma sem nunca repetir um padrão.
 
-        // ===== Lâmina diagonal de luz =====
-        // d = distância à linha central (x=0 no espaço rotacionado).
-        // Quanto menor d, mais luz. Cria a sensação de "feixe" atravessando a tela.
-        float d = abs(ruv.x);
+        float total = 0.0;
+        vec3 col = vec3(0.0);
 
-        // Núcleo afiado (mais brilhante) e halo amplo (suave).
-        float core = exp(-d * 18.0) * 0.9;
-        float halo = exp(-d * 3.5) * 0.55;
-        float beam = core + halo;
+        // Cores base das duas lâminas principais (rosa-avermelhado e roxo).
+        vec3 colors[3];
+        colors[0] = u_c1;
+        colors[1] = u_c2;
+        colors[2] = u_c3;
 
-        // Mistura rosa-avermelhado (u_c1) com roxo (u_c2) ao longo da diagonal.
-        // u_c3 é mantido como reforço de magenta sutil no núcleo.
-        float mixT = smoothstep(-0.6, 0.6, ruv.y + sin(t * 0.4) * 0.1);
-        vec3 beamColor = mix(u_c1, u_c2, mixT);
-        beamColor = mix(beamColor, u_c3, core * 0.25);
+        for (int i = 0; i < 3; i++) {
+          float fi = float(i);
 
-        // Acúmulo: fundo quase preto + lâmina luminosa.
-        vec3 col = u_bg + beamColor * beam * u_intensity;
+          // Ângulo desta lâmina, oscilando lentamente com o tempo.
+          float baseAngle = u_rotation + fi * 22.0; // off-set entre lâminas
+          float angle = baseAngle + sin(t * 0.5 + fi * 1.7) * 14.0;
+          float a = radians(angle);
+          float cs = cos(a), sn = sin(a);
+          vec2 ruv = mat2(cs, -sn, sn, cs) * uv;
 
-        // Vinheta circular escurecendo o que se afasta do centro (foco no conteúdo).
-        float vign = smoothstep(1.3, 0.2, length(uv));
-        col *= mix(0.55, 1.0, vign);
+          // Posição da lâmina (desliza pra frente/trás).
+          float shift = sin(t * 0.4 + fi * 2.3) * 0.35;
 
-        // Ruído finíssimo só pra evitar banding (sem "scanlines").
+          // Warp orgânico distorcendo a borda da lâmina.
+          float w = vnoise(ruv * 1.2 + vec2(t * 0.2, -t * 0.15 + fi)) - 0.5;
+          ruv.x += w * u_warp;
+
+          // Distância à linha central — fonte da luz.
+          float d = abs(ruv.x - shift);
+
+          // Largura pulsando: cada lâmina respira em ritmo próprio.
+          float width = 4.0 + sin(t * 0.6 + fi * 1.3) * 1.5;
+          float beam = exp(-d * width) * 0.7;
+
+          // Acumula com a cor desta lâmina.
+          col += colors[i] * beam;
+          total += beam;
+        }
+
+        // Normaliza pra não saturar quando os feixes se sobrepõem.
+        col /= max(total, 0.001);
+        col *= total * u_intensity;
+
+        // Fundo escuro + luz acumulada.
+        col = u_bg + col;
+
+        // Vinheta circular: escurece o que se afasta do centro.
+        float vign = smoothstep(1.4, 0.3, length(uv));
+        col *= mix(0.5, 1.0, vign);
+
+        // Ruído finíssimo só pra evitar banding.
         float n = (hash(gl_FragCoord.xy + t) - 0.5) * u_noise;
         col += n;
 
-        // Opacidade final: mistura com o fundo escuro pra controlar a presença geral.
+        // Opacidade final.
         col = mix(u_bg, col, u_opacity);
 
         gl_FragColor = vec4(col, 1.0);
