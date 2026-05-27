@@ -118,63 +118,53 @@ export function ColorBends({
       }
 
       void main() {
-        // Coordenada normalizada, centrada e proporcional.
+        // Coordenada normalizada, centrada (aspect-corrected).
         vec2 uv = (gl_FragCoord.xy - 0.5 * u_res) / min(u_res.x, u_res.y);
 
-        // Parallax do mouse (move ligeiramente as bandas).
+        // Parallax sutil do mouse.
         vec2 mouse = (u_mouse - 0.5);
         uv += mouse * u_parallax;
 
-        // Rotação.
+        // Rotação da "lâmina" diagonal.
         float a = radians(u_rotation);
         float cs = cos(a), sn = sin(a);
-        uv = mat2(cs, -sn, sn, cs) * uv;
-
-        // Escala.
-        uv *= u_scale;
+        vec2 ruv = mat2(cs, -sn, sn, cs) * uv;
 
         float t = u_time * u_speed;
 
-        // Warp: ruído lento empurra as bandas pra ficarem "líquidas".
-        float w =
-          vnoise(uv * 1.5 + vec2(t * 0.25, -t * 0.18)) - 0.5;
-        float w2 =
-          vnoise(uv * 3.0 - vec2(t * 0.12, t * 0.21)) - 0.5;
-        uv.x += (w + 0.6 * w2) * u_warp;
-        uv.y += (w2 - 0.3 * w) * u_warp * 0.6;
+        // Warp lento, só pra lâmina "respirar" de forma orgânica (sem ondular muito).
+        float w = vnoise(ruv * 0.8 + vec2(t * 0.15, -t * 0.10)) - 0.5;
+        ruv.x += w * u_warp * 0.6;
 
-        // Empurra mais com o mouse pra interação ficar perceptível.
-        uv += mouse * u_mouseInfl * 0.6;
+        // ===== Lâmina diagonal de luz =====
+        // d = distância à linha central (x=0 no espaço rotacionado).
+        // Quanto menor d, mais luz. Cria a sensação de "feixe" atravessando a tela.
+        float d = abs(ruv.x);
 
-        // Bandas: seno na coordenada Y, animando no tempo.
-        float band = uv.y * u_frequency * 3.0 + t * 0.6;
-        // Largura controlada por bandWidth (suaviza a transição entre bandas).
-        float soft = 1.0 / max(u_bandWidth, 0.1);
-        float k = sin(band) * 0.5 + 0.5;
+        // Núcleo afiado (mais brilhante) e halo amplo (suave).
+        float core = exp(-d * 18.0) * 0.9;
+        float halo = exp(-d * 3.5) * 0.55;
+        float beam = core + halo;
 
-        // Pega cor de acordo com a posição da banda. Multiplica pela suavidade
-        // pra criar a sensação de "faixas" ao invés de degradê contínuo.
-        float colorT = uv.y * u_frequency * 0.5 + t * 0.1;
-        vec3 col = palette(colorT);
-        col *= u_intensity * (0.6 + 0.4 * k);
+        // Mistura rosa-avermelhado (u_c1) com roxo (u_c2) ao longo da diagonal.
+        // u_c3 é mantido como reforço de magenta sutil no núcleo.
+        float mixT = smoothstep(-0.6, 0.6, ruv.y + sin(t * 0.4) * 0.1);
+        vec3 beamColor = mix(u_c1, u_c2, mixT);
+        beamColor = mix(beamColor, u_c3, core * 0.25);
 
-        // Ruído fino por cima (granulado discreto).
+        // Acúmulo: fundo quase preto + lâmina luminosa.
+        vec3 col = u_bg + beamColor * beam * u_intensity;
+
+        // Vinheta circular escurecendo o que se afasta do centro (foco no conteúdo).
+        float vign = smoothstep(1.3, 0.2, length(uv));
+        col *= mix(0.55, 1.0, vign);
+
+        // Ruído finíssimo só pra evitar banding (sem "scanlines").
         float n = (hash(gl_FragCoord.xy + t) - 0.5) * u_noise;
         col += n;
 
-        // Vinheta INVERTIDA: escurece o CENTRO da tela (onde fica o conteúdo)
-        // e deixa o efeito viver discretamente nos cantos. Isso é o que torna
-        // o fundo "quase imperceptível" sem matar a vida nas bordas.
-        float d = length(uv);
-        float vign = smoothstep(0.0, 1.4, d); // 0 no centro, 1 longe
-        col *= vign;
-        col = mix(u_bg, col, vign);
-
-        // Mistura com a cor de fundo de acordo com a opacidade desejada.
+        // Opacidade final: mistura com o fundo escuro pra controlar a presença geral.
         col = mix(u_bg, col, u_opacity);
-
-        // Aplica suavização nas faixas (efeito ainda mais "bands").
-        col = mix(col, palette(colorT + 0.5), pow(1.0 - k, soft) * 0.15);
 
         gl_FragColor = vec4(col, 1.0);
       }
