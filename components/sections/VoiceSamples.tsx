@@ -40,20 +40,9 @@ function VoiceCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-card flex items-center gap-5 p-6 hover:-translate-y-1 hover:border-line-strong hover:bg-glass-strong"
+      className="glass-card p-6 hover:-translate-y-1 hover:border-line-strong hover:bg-glass-strong"
     >
-      <div
-        className="grid h-[84px] w-[84px] flex-shrink-0 place-items-center rounded-[18px] font-display text-[1.6rem] font-bold text-white"
-        style={{
-          background: sample.photoUrl
-            ? `center/cover url(${sample.photoUrl})`
-            : sample.avatarGradient,
-        }}
-      >
-        {!sample.photoUrl && sample.initials}
-      </div>
-
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0">
         <div className="font-display text-[1.15rem] font-semibold">
           {sample.character}
         </div>

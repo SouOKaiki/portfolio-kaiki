@@ -9,7 +9,7 @@ export function Contact({ content }: { content: SiteContent }) {
   const t = useT();
   const { contact } = content;
   return (
-    <section id="estudio" className="mx-auto max-w-[1200px] px-7 py-[120px]">
+    <section className="mx-auto max-w-[1200px] px-7 py-[120px]">
       <Reveal>
         <div
           id="contato"

@@ -17,10 +17,24 @@ export const dict = {
     "nav.portfolio": "Portfólio",
     "nav.voices": "Vozes",
     "nav.services": "Serviços",
-    "nav.studio": "Estúdio",
+    "nav.studio": "Equipamento",
     "nav.contact": "Contato",
 
     "hero.listenSamples": "Ouvir samples",
+
+    "equipment.tag": "Meu setup",
+    "equipment.title": "Equipamento",
+    "equipment.desc":
+      "O que eu uso pra entregar áudio limpo e com presença.",
+    "equipment.mic.title": "Rode NT1 5th Gen",
+    "equipment.mic.desc":
+      "Microfone condensador de estúdio. Captação cristalina, baixo ruído próprio, perfeito pra voz.",
+    "equipment.daw.title": "DAW Reaper",
+    "equipment.daw.desc":
+      "Edição, mixagem e masterização. Workflow rápido e plugins de áudio profissionais.",
+    "equipment.room.title": "Home studio tratado",
+    "equipment.room.desc":
+      "Cabine com tratamento acústico — sem reflexões, ruído de fundo ou eco indesejado.",
 
     "portfolio.tag": "Meus trabalhos",
     "portfolio.title": "Trabalhos que ganharam voz",
@@ -57,7 +71,7 @@ export const dict = {
     "footer.tagline":
       "Dublagem e voice acting para jogos, animações e animes. Cada história merece a voz certa.",
     "footer.contact": "Contato",
-    "footer.madeWith": "Vamos dublar?",
+    "footer.madeWith": "Feito com voz.",
 
     "lang.welcomeTitle": "Escolha seu idioma",
     "lang.welcomeText": "Choose your language",
@@ -67,10 +81,24 @@ export const dict = {
     "nav.portfolio": "Portfolio",
     "nav.voices": "Voices",
     "nav.services": "Services",
-    "nav.studio": "Studio",
+    "nav.studio": "Gear",
     "nav.contact": "Contact",
 
     "hero.listenSamples": "Listen to samples",
+
+    "equipment.tag": "My setup",
+    "equipment.title": "Gear",
+    "equipment.desc":
+      "What I use to deliver clean, present audio.",
+    "equipment.mic.title": "Rode NT1 5th Gen",
+    "equipment.mic.desc":
+      "Studio condenser microphone. Crystal-clear capture, very low self-noise, perfect for voice.",
+    "equipment.daw.title": "DAW Reaper",
+    "equipment.daw.desc":
+      "Editing, mixing and mastering. Fast workflow and professional audio plugins.",
+    "equipment.room.title": "Treated home studio",
+    "equipment.room.desc":
+      "Acoustically treated booth — no reflections, background noise or unwanted echo.",
 
     "portfolio.tag": "My work",
     "portfolio.title": "Work that found its voice",

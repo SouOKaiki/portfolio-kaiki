@@ -5,6 +5,7 @@ import { Marquee } from "@/components/sections/Marquee";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { VoiceSamples } from "@/components/sections/VoiceSamples";
 import { Services } from "@/components/sections/Services";
+import { Equipment } from "@/components/sections/Equipment";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 import { LanguageWelcome } from "@/components/ui/LanguageWelcome";
@@ -43,6 +44,7 @@ export default async function HomePage() {
         <Portfolio items={portfolio} />
         <VoiceSamples samples={voices} />
         <Services services={services} />
+        <Equipment />
         <Contact content={content} />
       </main>
       <Footer content={content} />
